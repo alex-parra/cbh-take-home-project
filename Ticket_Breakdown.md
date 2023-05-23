@@ -16,3 +16,22 @@ Based on the information given, break this ticket down into 2-5 individual ticke
 You will be graded on the level of detail in each ticket, the clarity of the execution plan within and between tickets, and the intelligibility of your language. You don't need to be a native English speaker, but please proof-read your work.
 
 ## Your Breakdown Here
+
+#### T1: Custom Agent IDs  
+> In order to allow each facility to have custom id's for each agent, we need a pivot table `facility_agents` witht the following columns: 
+>   - facility_id `// the facility unique id at facilities table`
+>   - agent_id `// the agent unique id at agents table`
+>   - facility_agent_id `// the custom id each facility assigns each agent`  
+> 
+> There should be a foreign key constraint on `facility_id` to `facilities.id`  
+> There should be a foreign key constraint on `agent_id` to `agents.id`  
+> There should be a `UNIQUE` constraint on `(facility_id, agent_id)` to ensure that a facility does not enter the same agent twice.  
+> There should be a `UNIQUE` constraint on `(facility_id, facility_agent_id)` to ensure that a facility does not enter duplicate custom agent ids.  
+
+#### T2. Update `getShiftsByFacility` to include the custom agent id
+> Update the agent metadata to include the custom id from `facility_agents`
+> Expose it in the metadata as property `facility_agent_id`
+
+#### T3. Update `generateReport` to use `agent.facility_agent_id` instead of `agent.id`
+> Update the report generation so that instead of using the `id` of the agent from the `agents` table, use the `facility_agent_id`.  
+> If `facility_agent_id` is not set, fallback to `agent.id`
